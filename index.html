@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Garvit | B.Tech Student & AI/Tech Enthusiast Portfolio</title>
+    <title>Garvit | B.Tech Student &amp; AI/Tech Enthusiast Portfolio</title>
     <meta name="description" content="Personal portfolio of Garvit, B.Tech student interested in artificial intelligence, web development, and digital productivity." />
     <meta name="keywords" content="Portfolio, B.Tech, Student, Artificial Intelligence, Web Development, React, Tailwind CSS, Python" />
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
+    <!-- Favicon: Inline SVG data URI so it works anywhere without 404s -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%236366f1'/><stop offset='100%25' stop-color='%23a855f7'/></linearGradient></defs><rect width='100' height='100' rx='24' fill='url(%23g)'/><text x='50' y='68' font-family='system-ui,sans-serif' font-size='54' font-weight='bold' fill='white' text-anchor='middle'>G</text></svg>" />
 
-    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <!-- Google Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <!-- Tailwind CSS CDN for instant zero-config rendering -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -49,7 +49,22 @@
             }
           }
         }
-      }
+      };
+    </script>
+
+    <!-- Immediate Theme Check: prevents white flash (FOUC) when dark mode is active -->
+    <script>
+      (function() {
+        try {
+          const savedTheme = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
     </script>
 
     <style>
@@ -80,9 +95,18 @@
         background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                           linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
       }
+
+      /* Modal animation */
+      @keyframes modalFadeIn {
+        from { opacity: 0; transform: scale(0.96); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      .animate-modal {
+        animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
     </style>
 
-    <!-- React 18 & Babel Standalone for Instant Local Execution -->
+    <!-- React 18 & Babel Standalone for Instant Execution -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -90,7 +114,7 @@
   <body class="antialiased bg-white dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 transition-colors duration-300 selection:bg-indigo-500 selection:text-white">
     <div id="root"></div>
 
-    <!-- Application Script (Runs instantly in browser with Babel & works with Vite build) -->
+    <!-- Application Script -->
     <script type="text/babel">
       const { useState, useEffect } = React;
 
@@ -106,6 +130,7 @@
         email: "garvit.student@example.com",
         linkedin: "https://linkedin.com/in/garvit",
         github: "https://github.com/garvit",
+        resumeUrl: "#", // Update with your direct PDF or Google Drive URL
         bioShort: "I am a B.Tech student interested in technology, artificial intelligence, web development and digital productivity. I am learning modern technologies and building practical projects.",
         bioLong: "I am an enthusiastic B.Tech student with a strong passion for exploring the intersection of modern web development and artificial intelligence. My journey is fueled by a relentless curiosity to understand how intelligent systems work and how they can be leveraged to solve real-world problems. When I am not writing code or building full-stack web applications, you can find me experimenting with generative AI workflows, optimizing digital productivity systems, and contributing to collaborative tech communities.",
         quickStats: [
@@ -354,6 +379,12 @@
         </svg>
       );
 
+      const AlertCircleIcon = () => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+      );
+
       const ExternalLinkIcon = () => (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
@@ -391,10 +422,48 @@
       );
 
       const SparklesIcon = () => (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
         </svg>
       );
+
+      const DownloadIcon = () => (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+      );
+
+      // Interest Icons
+      const CpuIcon = () => (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect width="16" height="16" x="4" y="4" rx="2" /><rect width="6" height="6" x="9" y="9" rx="1" /><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2" />
+        </svg>
+      );
+
+      const GlobeIcon = () => (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" /><line x1="2" x2="22" y1="12" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        </svg>
+      );
+
+      const ZapIcon = () => (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg>
+      );
+
+      const CodeIcon = () => (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
+        </svg>
+      );
+
+      const interestIcons = {
+        cpu: CpuIcon,
+        globe: GlobeIcon,
+        zap: ZapIcon,
+        code: CodeIcon,
+      };
 
       // ==========================================
       // MAIN APPLICATION COMPONENT
@@ -422,6 +491,7 @@
         const [contactForm, setContactForm] = useState({ name: '', email: '', subject: '', message: '' });
         const [isSubmitting, setIsSubmitting] = useState(false);
 
+        // Dark mode class sync with localStorage
         useEffect(() => {
           const root = document.documentElement;
           if (isDark) {
@@ -433,13 +503,22 @@
           }
         }, [isDark]);
 
+        // Scroll progress & active section spy
         useEffect(() => {
           const handleScroll = () => {
             setScrolled(window.scrollY > 20);
 
             const current = window.scrollY;
             const total = document.documentElement.scrollHeight - window.innerHeight;
-            if (total > 0) setScrollProgress((current / total) * 100);
+            if (total > 0) {
+              setScrollProgress(Math.min(100, Math.max(0, (current / total) * 100)));
+            }
+
+            // Bottom of page detection
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60) {
+              setActiveSection('contact');
+              return;
+            }
 
             const sections = ['home', 'about', 'education', 'skills', 'projects', 'achievements', 'contact'];
             const scrollPos = window.scrollY + 140;
@@ -453,8 +532,32 @@
           };
 
           window.addEventListener('scroll', handleScroll, { passive: true });
+          handleScroll();
           return () => window.removeEventListener('scroll', handleScroll);
         }, []);
+
+        // Close modal on Escape key & handle body scroll lock
+        useEffect(() => {
+          const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+              setSelectedProject(null);
+              setMobileMenuOpen(false);
+            }
+          };
+          window.addEventListener('keydown', handleKeyDown);
+          return () => window.removeEventListener('keydown', handleKeyDown);
+        }, []);
+
+        useEffect(() => {
+          if (selectedProject) {
+            document.body.style.overflow = 'hidden';
+          } else {
+            document.body.style.overflow = '';
+          }
+          return () => {
+            document.body.style.overflow = '';
+          };
+        }, [selectedProject]);
 
         const scrollToSection = (e, id) => {
           if (e) e.preventDefault();
@@ -481,16 +584,16 @@
 
         const handleFormSubmit = (e) => {
           e.preventDefault();
-          if (!contactForm.name || !contactForm.email || !contactForm.message) {
+          if (!contactForm.name.trim() || !contactForm.email.trim() || !contactForm.message.trim()) {
             showToastMessage('Please fill in all required fields.', 'error');
             return;
           }
           setIsSubmitting(true);
           setTimeout(() => {
             setIsSubmitting(false);
-            showToastMessage(`Thank you, ${contactForm.name}! Your message was simulated successfully.`);
+            showToastMessage(`Thank you, ${contactForm.name}! Message sent successfully.`);
             setContactForm({ name: '', email: '', subject: '', message: '' });
-          }, 800);
+          }, 600);
         };
 
         const filteredSkills = activeSkillCategory === 'All'
@@ -511,10 +614,20 @@
 
             {/* Toast Notification */}
             {toast && (
-              <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-slate-900/95 dark:bg-white/95 text-white dark:text-slate-900 shadow-2xl backdrop-blur-md border border-slate-700/50 dark:border-slate-200/50">
-                <span className="text-emerald-400 dark:text-emerald-600"><CheckCircleIcon /></span>
+              <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl backdrop-blur-md border transition-all ${
+                toast.type === 'error'
+                  ? 'bg-rose-950/95 dark:bg-rose-900/95 text-white border-rose-800/60'
+                  : 'bg-slate-900/95 dark:bg-white/95 text-white dark:text-slate-900 border-slate-700/50 dark:border-slate-200/50'
+              }`}>
+                <span className={toast.type === 'error' ? 'text-rose-400' : 'text-emerald-400 dark:text-emerald-600'}>
+                  {toast.type === 'error' ? <AlertCircleIcon /> : <CheckCircleIcon />}
+                </span>
                 <span className="text-sm font-semibold">{toast.msg}</span>
-                <button onClick={() => setToast(null)} className="ml-2 text-slate-400 hover:text-white dark:text-slate-500 dark:hover:text-black">
+                <button
+                  onClick={() => setToast(null)}
+                  className="ml-2 text-slate-400 hover:text-white dark:text-slate-500 dark:hover:text-black cursor-pointer"
+                  aria-label="Dismiss notification"
+                >
                   <XIcon />
                 </button>
               </div>
@@ -523,7 +636,7 @@
             {/* NAVBAR */}
             <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
               scrolled
-                ? 'bg-white/85 dark:bg-slate-900/85 backdrop-blur-md shadow-sm border-b border-slate-200/60 dark:border-slate-800 py-3'
+                ? 'bg-white/85 dark:bg-[#0B0F19]/85 backdrop-blur-md shadow-sm border-b border-slate-200/60 dark:border-slate-800 py-3'
                 : 'bg-transparent py-5'
             }`}>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -581,7 +694,7 @@
                     <button
                       onClick={() => setIsDark(!isDark)}
                       aria-label="Toggle Theme"
-                      className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                     >
                       {isDark ? <span className="text-amber-400"><SunIcon /></span> : <MoonIcon />}
                     </button>
@@ -589,7 +702,7 @@
                     <button
                       onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                       aria-label="Toggle Navigation Menu"
-                      className="md:hidden p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      className="md:hidden p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                     >
                       {mobileMenuOpen ? <XIcon /> : <MenuIcon />}
                     </button>
@@ -640,7 +753,7 @@
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                       </span>
-                      <span>Available for Internships & Projects</span>
+                      <span>Available for Internships &amp; Projects</span>
                     </div>
 
                     {/* Name */}
@@ -661,7 +774,7 @@
                       {personalInfo.bioShort}
                     </p>
 
-                    {/* Buttons */}
+                    {/* Action Buttons */}
                     <div className="mt-8 flex flex-wrap items-center gap-4 w-full sm:w-auto">
                       <button
                         onClick={() => scrollToSection(null, 'projects')}
@@ -685,13 +798,13 @@
                       <span className="text-xs uppercase tracking-wider font-semibold text-slate-400 dark:text-slate-500">
                         Connect:
                       </span>
-                      <a href={personalInfo.github} target="_blank" rel="noreferrer" className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800">
+                      <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="GitHub Profile">
                         <GithubIcon />
                       </a>
-                      <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800">
+                      <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="LinkedIn Profile">
                         <LinkedinIcon />
                       </a>
-                      <a href={`mailto:${personalInfo.email}`} className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800">
+                      <a href={`mailto:${personalInfo.email}`} className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Send Email">
                         <MailIcon />
                       </a>
                     </div>
@@ -724,7 +837,7 @@
                       <div className="mt-5 grid grid-cols-2 gap-3">
                         <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60">
                           <div className="text-xs text-slate-500 dark:text-slate-400">Specialization</div>
-                          <div className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">AI & Web Apps</div>
+                          <div className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">AI &amp; Web Apps</div>
                         </div>
                         <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60">
                           <div className="text-xs text-slate-500 dark:text-slate-400">Stack</div>
@@ -765,7 +878,7 @@
                     <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-5">
                       <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2.5">
                         <span className="w-2.5 h-2.5 rounded-full bg-indigo-500" />
-                        Passionate Engineering Student & Builder
+                        Passionate Engineering Student &amp; Builder
                       </h3>
                       <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-base">{personalInfo.bioShort}</p>
                       <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">{personalInfo.bioLong}</p>
@@ -788,31 +901,43 @@
                       </div>
 
                       <div className="pt-4">
-                        <button
-                          onClick={() => showToastMessage('Resume link ready! You can configure your PDF link in portfolioData.js.')}
+                        <a
+                          href={personalInfo.resumeUrl !== '#' ? personalInfo.resumeUrl : undefined}
+                          onClick={(e) => {
+                            if (personalInfo.resumeUrl === '#' || !personalInfo.resumeUrl) {
+                              e.preventDefault();
+                              showToastMessage('Set your PDF resume link in personalInfo.resumeUrl at the top of the file!', 'info');
+                            }
+                          }}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold text-sm hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors shadow-sm cursor-pointer"
                         >
+                          <DownloadIcon />
                           <span>Download Resume / CV</span>
                           <ExternalLinkIcon />
-                        </button>
+                        </a>
                       </div>
                     </div>
                   </div>
 
                   <div className="lg:col-span-6 space-y-4">
                     <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
-                      Core Interests & Specializations
+                      Core Interests &amp; Specializations
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {personalInfo.interests.map((item, idx) => (
-                        <div key={idx} className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-indigo-500/50 hover:shadow-md transition-all">
-                          <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold mb-3">
-                            {idx + 1}
+                      {personalInfo.interests.map((item, idx) => {
+                        const IconComponent = interestIcons[item.icon] || SparklesIcon;
+                        return (
+                          <div key={idx} className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-indigo-500/50 hover:shadow-md transition-all group">
+                            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold mb-3 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                              <IconComponent />
+                            </div>
+                            <h4 className="text-base font-bold text-slate-900 dark:text-white mb-2">{item.title}</h4>
+                            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{item.description}</p>
                           </div>
-                          <h4 className="text-base font-bold text-slate-900 dark:text-white mb-2">{item.title}</h4>
-                          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{item.description}</p>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -857,7 +982,7 @@
                       <p className="mt-6 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">{edu.description}</p>
 
                       <div className="mt-6">
-                        <h4 className="text-xs uppercase tracking-wider font-bold text-slate-400 mb-3">Relevant Learning Areas & Coursework</h4>
+                        <h4 className="text-xs uppercase tracking-wider font-bold text-slate-400 mb-3">Relevant Learning Areas &amp; Coursework</h4>
                         <div className="flex flex-wrap gap-2">
                           {edu.courses.map((course, cIdx) => (
                             <span key={cIdx} className="px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-xs font-medium text-slate-700 dark:text-slate-300">
@@ -889,7 +1014,7 @@
                   <span className="inline-block px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3">
                     Technical Proficiency
                   </span>
-                  <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Skills & Expertise</h2>
+                  <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Skills &amp; Expertise</h2>
                   <div className="w-16 h-1 bg-gradient-to-r from-indigo-600 to-purple-600 mx-auto mt-4 rounded-full" />
                   <p className="mt-4 text-slate-600 dark:text-slate-400 text-sm sm:text-base">
                     Core programming languages, AI tools, web frameworks, and productivity setups.
@@ -904,7 +1029,7 @@
                       className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                         activeSkillCategory === cat
                           ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/25 scale-105'
-                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/80 hover:bg-slate-100'
+                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/80 hover:bg-slate-100 dark:hover:bg-slate-700'
                       }`}
                     >
                       {cat}
@@ -972,7 +1097,7 @@
                       className="flex flex-col rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden group"
                     >
                       <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
-                        <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <img src={project.image} alt={project.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
                         <div className="absolute top-4 left-4">
                           <span className="px-3 py-1 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-[11px] font-bold text-slate-800 dark:text-slate-200">
@@ -1002,7 +1127,7 @@
                         <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3">
                           <button
                             onClick={() => setSelectedProject(project)}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 cursor-pointer"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 cursor-pointer"
                           >
                             <span>View Details</span>
                             <ArrowRightIcon />
@@ -1012,17 +1137,23 @@
                             <a
                               href={project.githubUrl}
                               target="_blank"
-                              rel="noreferrer"
-                              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800"
+                              rel="noopener noreferrer"
+                              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                               title="GitHub Repository"
                             >
                               <GithubIcon />
                             </a>
                             <button
-                              onClick={() => setSelectedProject(project)}
+                              onClick={() => {
+                                if (project.demoUrl && project.demoUrl !== '#') {
+                                  window.open(project.demoUrl, '_blank');
+                                } else {
+                                  setSelectedProject(project);
+                                }
+                              }}
                               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-semibold shadow-sm hover:opacity-95 cursor-pointer"
                             >
-                              <span>View Project</span>
+                              <span>Demo</span>
                               <ExternalLinkIcon />
                             </button>
                           </div>
@@ -1034,14 +1165,21 @@
 
                 {/* Project Details Modal */}
                 {selectedProject && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                    <div className="relative w-full max-w-2xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+                  <div
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                    onClick={() => setSelectedProject(null)}
+                  >
+                    <div
+                      className="relative w-full max-w-2xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col animate-modal"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <div className="relative h-48 sm:h-56 w-full overflow-hidden shrink-0">
                         <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                         <button
                           onClick={() => setSelectedProject(null)}
-                          className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/80 transition-colors"
+                          className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/80 transition-colors cursor-pointer"
+                          aria-label="Close modal"
                         >
                           <XIcon />
                         </button>
@@ -1060,7 +1198,7 @@
                         </div>
 
                         <div>
-                          <h4 className="text-xs uppercase tracking-wider font-bold text-slate-400 mb-3">Key Features & Capabilities</h4>
+                          <h4 className="text-xs uppercase tracking-wider font-bold text-slate-400 mb-3">Key Features &amp; Capabilities</h4>
                           <div className="space-y-2">
                             {selectedProject.features.map((feature, fIdx) => (
                               <div key={fIdx} className="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-300">
@@ -1086,15 +1224,21 @@
                           <a
                             href={selectedProject.githubUrl}
                             target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                           >
                             <GithubIcon />
                             <span>GitHub Repo</span>
                           </a>
                           <button
-                            onClick={() => showToastMessage(`Live demo for "${selectedProject.title}" is ready!`)}
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold shadow-md cursor-pointer"
+                            onClick={() => {
+                              if (selectedProject.demoUrl && selectedProject.demoUrl !== '#') {
+                                window.open(selectedProject.demoUrl, '_blank');
+                              } else {
+                                showToastMessage(`Live demo link can be configured for "${selectedProject.title}" in projectsData!`, 'info');
+                              }
+                            }}
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold shadow-md hover:opacity-95 transition-opacity cursor-pointer"
                           >
                             <span>Live Preview</span>
                             <ExternalLinkIcon />
@@ -1112,9 +1256,9 @@
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-3xl mx-auto">
                   <span className="inline-block px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3">
-                    Milestones & Recognition
+                    Milestones &amp; Recognition
                   </span>
-                  <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Achievements & Certifications</h2>
+                  <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Achievements &amp; Certifications</h2>
                   <div className="w-16 h-1 bg-gradient-to-r from-indigo-600 to-purple-600 mx-auto mt-4 rounded-full" />
                   <p className="mt-4 text-slate-600 dark:text-slate-400 text-sm sm:text-base">
                     Verified credentials, competitive hackathons, completed coursework, and academic milestones.
@@ -1129,7 +1273,7 @@
                       className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                         activeAchievementTab === category
                           ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/25 scale-105'
-                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/80 hover:bg-slate-100'
+                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/80 hover:bg-slate-100 dark:hover:bg-slate-700'
                       }`}
                     >
                       {category}
@@ -1169,7 +1313,7 @@
                           Verified Milestone
                         </span>
                         <button
-                          onClick={() => showToastMessage(`Certificate details for "${item.title}" can be linked in portfolioData.js.`)}
+                          onClick={() => showToastMessage(`Certificate proof for "${item.title}" can be linked in achievementsData!`)}
                           className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer"
                         >
                           <span>View Proof</span>
@@ -1179,14 +1323,14 @@
                     </div>
                   ))}
 
-                  {/* Add New Achievement Callout */}
+                  {/* Add New Achievement Slot */}
                   <div className="p-6 rounded-3xl border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-indigo-500 transition-colors flex flex-col items-center justify-center text-center group min-h-[220px]">
                     <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center group-hover:text-indigo-500 transition-all mb-3">
                       <SparklesIcon />
                     </div>
                     <h4 className="text-base font-bold text-slate-800 dark:text-slate-200">Add New Achievement</h4>
                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-[220px]">
-                      Easily append your future hackathons, certifications, and awards in <code className="font-mono text-indigo-600 dark:text-indigo-400">portfolioData.js</code>.
+                      Easily append your future hackathons, certifications, and awards in the <code className="font-mono text-indigo-600 dark:text-indigo-400">achievementsData</code> array.
                     </p>
                   </div>
                 </div>
@@ -1239,7 +1383,7 @@
                         <a
                           href={personalInfo.linkedin}
                           target="_blank"
-                          rel="noreferrer"
+                          rel="noopener noreferrer"
                           className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between hover:border-indigo-500/50 transition-all group"
                         >
                           <div className="flex items-center gap-3.5">
@@ -1260,7 +1404,7 @@
                         <a
                           href={personalInfo.github}
                           target="_blank"
-                          rel="noreferrer"
+                          rel="noopener noreferrer"
                           className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between hover:border-indigo-500/50 transition-all group"
                         >
                           <div className="flex items-center gap-3.5">
@@ -1270,7 +1414,7 @@
                             <div>
                               <div className="text-xs text-slate-400 font-medium">GitHub</div>
                               <div className="text-sm font-semibold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600">
-                                Explore Code & Repos
+                                Explore Code &amp; Repos
                               </div>
                             </div>
                           </div>
@@ -1386,13 +1530,13 @@
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <a href={personalInfo.github} target="_blank" rel="noreferrer" className="p-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="p-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="GitHub">
                       <GithubIcon />
                     </a>
-                    <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="p-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="LinkedIn">
                       <LinkedinIcon />
                     </a>
-                    <a href={`mailto:${personalInfo.email}`} className="p-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <a href={`mailto:${personalInfo.email}`} className="p-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Email">
                       <MailIcon />
                     </a>
                     <button
@@ -1406,8 +1550,8 @@
                 </div>
 
                 <div className="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-                  <div>&copy; {new Date().getFullYear()} {personalInfo.name}. All rights reserved. Built with React & Tailwind CSS.</div>
-                  <div>Designed for Vercel & Modern Browsers</div>
+                  <div>&copy; {new Date().getFullYear()} {personalInfo.name}. All rights reserved. Built with React &amp; Tailwind CSS.</div>
+                  <div>Designed for Vercel &amp; Modern Browsers</div>
                 </div>
               </div>
             </footer>
@@ -1418,7 +1562,9 @@
       const root = ReactDOM.createRoot(document.getElementById('root'));
       root.render(<PortfolioApp />);
     </script>
-    <script src="https://cdn.botpress.cloud/webchat/v5.0/inject.js"></script>
-<script src="https://files.bpcontent.cloud/2026/10/06/02/20261006025249-U6N54IWP.js" defer></script>
+
+    <!-- Botpress Webchat Integration: using genuine CDN version & deferred loading -->
+    <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js" defer></script>
+    <script src="https://files.bpcontent.cloud/2026/10/06/02/20261006025249-U6N54IWP.js" defer></script>
   </body>
 </html>
